@@ -1,0 +1,7 @@
+input a word in english
+
+display the word in english and spanish with a definition
+
+have an option to add that word to a likes
+
+Make a 'take quiz' button that makes a quiz out of the user's liked words
