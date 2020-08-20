@@ -8,7 +8,7 @@ window.state = state;
 /**
  * Search
  */
-elements.search.addEventListener("submit", (e) => {
+elements.search.addEventListener("submit", async (e) => {
   e.preventDefault();
   // Get input data
   const query = elements.searchInput.value;
@@ -16,10 +16,13 @@ elements.search.addEventListener("submit", (e) => {
   state.search = new Search(query);
 
   // Get the translation
-  state.search.getTranslation();
+  await state.search.getTranslation();
 
   // Get the definition
-  state.search.getDefinition();
+  await state.search.getDefinition();
+
+  console.log(state.search);
+  console.log(state.search.translation);
 });
 
 state.search = new Search();
