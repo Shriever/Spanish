@@ -1,4 +1,7 @@
 import Search from "./models/Search";
+import Likes from "./models/Likes";
+import * as searchView from "./views/searchView";
+import * as likesView from "./views/likesView";
 import { elements } from "./views/base";
 
 const state = {};
@@ -8,6 +11,8 @@ window.state = state;
 /**
  * Search
  */
+
+state.search = new Search();
 elements.search.addEventListener("submit", async (e) => {
   e.preventDefault();
   // Get input data
@@ -21,8 +26,34 @@ elements.search.addEventListener("submit", async (e) => {
   // Get the definition
   await state.search.getDefinition();
 
+  // Display results to UI
+  try {
+    searchView.displayWords(state.search);
+  } catch (err) {
+    console.log(err);
+  }
   console.log(state.search);
   console.log(state.search.translation);
 });
 
-state.search = new Search();
+/**
+ * Likes
+ */
+state.likes = new Likes();
+
+elements.recipe.addEventListener("click", (e) => {
+  if (e.target.matches(".recipe__love, .recipe__love *")) {
+    if (!state.likes.isLiked(state.search.enWord)) {
+      // Add word to likes list
+      state.likes.addLike(state.search.enWord);
+      // Update UI
+      likesView.updateLikes(state.likes.likes);
+      console.log(state.likes);
+    } else {
+      // Remove word from likes list
+      state.likes.removeLike(state.search.enWord);
+      // Update UI
+      likesView.updateLikes(state.likes.likes);
+    }
+  }
+});
