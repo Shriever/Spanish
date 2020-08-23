@@ -1,6 +1,11 @@
 import { elements } from "./base";
 
+const clearLikes = () => {
+  elements.likesList.innerHTML = "";
+};
+
 export const updateLikes = (likes) => {
+  clearLikes();
   likes.forEach((el) => {
     const markup = `
     <li>

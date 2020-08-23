@@ -36,6 +36,27 @@ elements.search.addEventListener("submit", async (e) => {
   console.log(state.search.translation);
 });
 
+["hashchange", "load"].forEach((e) => {
+  window.addEventListener(e, async () => {
+    const url = window.location.hash.split("#")[1];
+    // Create new search item
+    state.search = new Search(url);
+
+    // Get the translation
+    await state.search.getTranslation();
+
+    // Get the definition
+    await state.search.getDefinition();
+
+    // Display results to UI
+    try {
+      searchView.displayWords(state.search);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+});
+
 /**
  * Likes
  */
@@ -46,14 +67,20 @@ elements.recipe.addEventListener("click", (e) => {
     if (!state.likes.isLiked(state.search.enWord)) {
       // Add word to likes list
       state.likes.addLike(state.search.enWord);
+
       // Update UI
-      likesView.updateLikes(state.likes.likes);
+      likesView.updateLikes();
       console.log(state.likes);
     } else {
       // Remove word from likes list
       state.likes.removeLike(state.search.enWord);
       // Update UI
-      likesView.updateLikes(state.likes.likes);
+      likesView.updateLikes();
     }
   }
+});
+window.addEventListener("load", () => {
+  const likes = state.likes.getStorage();
+
+  likesView.updateLikes(likes);
 });

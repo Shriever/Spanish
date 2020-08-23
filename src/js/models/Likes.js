@@ -2,6 +2,7 @@ export default class Likes {
   constructor() {
     this.likes = [];
   }
+
   addLike(enWord) {
     this.likes.push(enWord);
     this.updateStorage();
@@ -17,5 +18,8 @@ export default class Likes {
   }
   updateStorage() {
     localStorage.setItem("likes", JSON.stringify(this.likes));
+  }
+  getStorage() {
+    return JSON.parse(localStorage.getItem("likes"));
   }
 }
